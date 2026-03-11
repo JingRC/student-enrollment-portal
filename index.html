@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>学生注册页面</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="bg-orb orb-left"></div>
+      <div class="bg-orb orb-right"></div>
+
+      <main class="registration-layout">
+        <section class="brand-panel">
+          <p class="eyebrow">Student Enrollment Portal</p>
+          <h1>学生注册信息采集系统</h1>
+          <p class="intro">
+            面向学生信息登记场景设计，融合清晰的分区结构、精致的视觉层次与顺畅的表单交互，让信息录入过程更直观、更高效。
+          </p>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="feature-index">01</span>
+              <h2>层次化界面</h2>
+              <p>
+                采用左右分栏布局、柔和渐变背景与卡片式信息分组，重点内容一眼可见，浏览路径更清晰。
+              </p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-index">02</span>
+              <h2>即时预览</h2>
+              <p>
+                支持头像上传、档案卡同步更新与关键信息联动展示，输入变化能够即时反馈到页面预览区。
+              </p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-index">03</span>
+              <h2>智能交互</h2>
+              <p>
+                集成密码强度识别、输入状态提示、本地草稿保存与提交校验，增强整体使用体验与操作效率。
+              </p>
+            </article>
+          </div>
+
+          <div class="preview-card" id="previewCard">
+            <div class="preview-top">
+              <div class="avatar-frame">
+                <img
+                  id="avatarPreview"
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' rx='36' fill='%23f5ede3'/%3E%3Ccircle cx='80' cy='58' r='28' fill='%23cc9f74'/%3E%3Cpath d='M36 136c8-26 29-40 44-40s36 14 44 40' fill='%23cc9f74'/%3E%3C/svg%3E"
+                  alt="头像预览"
+                />
+              </div>
+              <div>
+                <p class="mini-label">实时档案卡</p>
+                <h3 class="card-heading">
+                  <span id="cardName">请输入你的姓名</span>
+                  <span class="age-badge" id="cardAge">未填写生日</span>
+                </h3>
+                <p id="cardMeta">未选择性别 · 待完善信息</p>
+              </div>
+            </div>
+            <dl class="preview-list">
+              <div>
+                <dt>联系邮箱</dt>
+                <dd id="cardEmail">example@student.edu.cn</dd>
+              </div>
+              <div>
+                <dt>联系电话</dt>
+                <dd id="cardPhone">未填写</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="campus-gallery-shell">
+            <div class="gallery-toolbar">
+              <p>校园风采</p>
+              <div class="gallery-controls" aria-label="校园图片切换按钮">
+                <button
+                  type="button"
+                  class="gallery-control-btn"
+                  id="galleryPrevBtn"
+                  aria-label="上一张校园图片"
+                >
+                  <span aria-hidden="true">&#8249;</span>
+                </button>
+                <button
+                  type="button"
+                  class="gallery-control-btn"
+                  id="galleryNextBtn"
+                  aria-label="下一张校园图片"
+                >
+                  <span aria-hidden="true">&#8250;</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="campus-gallery" aria-label="校园展示">
+              <article
+                class="gallery-card gallery-card--exit"
+                data-gallery-slot="0"
+              >
+                <img src="1.jpg" alt="校园风景展示一" class="gallery-image" />
+                <div class="gallery-overlay">
+                  <p>Campus View</p>
+                  <h3>校园景观</h3>
+                </div>
+              </article>
+              <article class="gallery-card" data-gallery-slot="1">
+                <img src="2.png" alt="校园风景展示二" class="gallery-image" />
+                <div class="gallery-overlay">
+                  <p>Learning Space</p>
+                  <h3>学习空间</h3>
+                </div>
+              </article>
+              <article
+                class="gallery-card gallery-card--enter"
+                data-gallery-slot="2"
+              >
+                <img src="3.png" alt="校园风景展示三" class="gallery-image" />
+                <div class="gallery-overlay">
+                  <p>Campus Memory</p>
+                  <h3>校园印象</h3>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Registration Form</p>
+              <h2>填写学生注册资料</h2>
+            </div>
+            <button type="button" class="ghost-btn" id="clearDraftBtn">
+              清除草稿
+            </button>
+          </div>
+
+          <div class="form-progress" aria-label="填写进度">
+            <div class="progress-meta">
+              <p id="progressLabel">当前进度</p>
+              <strong id="progressValue">0%</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span class="progress-fill" id="progressFill"></span>
+            </div>
+            <p class="progress-note" id="progressNote">请先填写基础信息。</p>
+          </div>
+
+          <form id="registrationForm" novalidate>
+            <div class="form-grid">
+              <label class="field field-large">
+                <span>学生姓名</span>
+                <input
+                  type="text"
+                  id="studentName"
+                  name="studentName"
+                  placeholder="请输入你的真实姓名"
+                  value="张同学"
+                  required
+                />
+              </label>
+
+              <fieldset class="field">
+                <legend>性别</legend>
+                <div class="segmented-control">
+                  <label>
+                    <input type="radio" name="gender" value="男" required />
+                    <span>男</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="gender" value="女" />
+                    <span>女</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="gender" value="其他" />
+                    <span>其他</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <label class="field">
+                <span>学号</span>
+                <input
+                  type="text"
+                  id="studentId"
+                  name="studentId"
+                  placeholder="例如 20260001"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span>联系电话</span>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="请输入11位手机号"
+                  pattern="^1\d{10}$"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span>电子邮箱</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="请输入常用邮箱"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span>出生日期</span>
+                <input type="date" id="birthday" name="birthday" required />
+              </label>
+
+              <label class="field">
+                <span>所在院系</span>
+                <select id="department" name="department" required>
+                  <option value="">请选择院系</option>
+                  <option value="计算机学院">计算机学院</option>
+                  <option value="信息工程学院">信息工程学院</option>
+                  <option value="人工智能学院">人工智能学院</option>
+                  <option value="经济管理学院">经济管理学院</option>
+                  <option value="数学与系统科学学院">数学与系统科学学院</option>
+                  <option value="外国语学院">外国语学院</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>所在专业</span>
+                <input
+                  type="text"
+                  id="major"
+                  name="major"
+                  placeholder="请输入所在专业"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span>所在班级</span>
+                <input
+                  type="text"
+                  id="className"
+                  name="className"
+                  placeholder="例如 大数据23-5班"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span>登录密码</span>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="请输入密码"
+                  minlength="8"
+                  required
+                />
+                <div class="strength-bar" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <small id="passwordHint"
+                  >密码长度不少于8位，建议包含字母、数字和符号。</small
+                >
+              </label>
+
+              <label class="field">
+                <span>确认密码</span>
+                <div class="input-status-field" id="confirmPasswordField">
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="请再次输入密码"
+                    minlength="8"
+                    required
+                  />
+                  <span class="confirm-status-icon" aria-hidden="true"></span>
+                </div>
+                <small id="confirmPasswordHint"
+                  >请再次输入与登录密码一致的内容。</small
+                >
+              </label>
+
+              <label class="field field-large upload-field">
+                <span>上传头像</span>
+                <input type="file" id="avatar" name="avatar" accept="image/*" />
+                <div class="upload-box">
+                  <strong id="uploadTitle">点击选择自己的照片</strong>
+                  <p id="uploadDescription">
+                    支持 JPG、PNG、WEBP，建议上传清晰正面照。
+                  </p>
+                </div>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-btn" id="submitBtn">
+                提交注册信息
+              </button>
+              <button type="reset" class="secondary-btn">重置表单</button>
+            </div>
+
+            <p
+              class="submit-message"
+              id="submitMessage"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
