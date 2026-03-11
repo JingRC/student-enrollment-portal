@@ -48,65 +48,65 @@ const defaultUploadDescription = uploadDescription.textContent;
 const galleryItems = [
   {
     src: "1.jpg",
-    alt: "鏍″洯椋庢櫙灞曠ず涓€",
+    alt: "校园风景展示一",
     eyebrow: "Lovely Campus",
-    title: "缇庡ソ鏍″洯",
+    title: "美好校园",
     objectPosition: "center center",
   },
   {
     src: "2.png",
-    alt: "鏍″洯椋庢櫙灞曠ず浜?,
+    alt: "校园风景展示二",
     eyebrow: "Learning Space",
-    title: "瀛︿範绌洪棿",
+    title: "学习空间",
     objectPosition: "center 42%",
   },
   {
     src: "3.png",
-    alt: "鏍″洯椋庢櫙灞曠ず涓?,
+    alt: "校园风景展示三",
     eyebrow: "Campus Recall",
-    title: "鏍″洯鍥炲繂",
+    title: "校园回忆",
     objectPosition: "center center",
   },
   {
     src: "4.png",
-    alt: "鏍″洯椋庢櫙灞曠ず鍥?,
+    alt: "校园风景展示四",
     eyebrow: "Architecture",
-    title: "寤虹瓚椋庤矊",
+    title: "建筑风貌",
     objectPosition: "center 38%",
   },
   {
     src: "5.webp",
-    alt: "鏍″洯椋庢櫙灞曠ず浜?,
+    alt: "校园风景展示五",
     eyebrow: "Willows And Orioles",
-    title: "鏌虫氮闂昏幒",
+    title: "柳浪闻莺",
     objectPosition: "center center",
   },
   {
     src: "6.webp",
-    alt: "鏍″洯椋庢櫙灞曠ず鍏?,
+    alt: "校园风景展示六",
     eyebrow: "Molten Sunset",
-    title: "钀芥棩鐔旈噾",
+    title: "落日熔金",
     objectPosition: "center 46%",
   },
   {
     src: "7.webp",
-    alt: "鏍″洯椋庢櫙灞曠ず涓?,
+    alt: "校园风景展示七",
     eyebrow: "Autumn Charm",
-    title: "绉嬭壊瀹滀汉",
+    title: "秋色宜人",
     objectPosition: "center 44%",
   },
   {
     src: "8.jpg",
-    alt: "鏍″洯椋庢櫙灞曠ず鍏?,
+    alt: "校园风景展示八",
     eyebrow: "Campus Story",
-    title: "鏍″洯鏁呬簨",
+    title: "校园故事",
     objectPosition: "center center",
   },
 ];
 const cardTemplates = [
   {
     id: "sunrise",
-    name: "鏅ㄦ洣鏍″洯",
+    name: "晨曦校园",
     background: ["#233a59", "#b45f34", "#f2c792"],
     panel: "rgba(255, 247, 238, 0.88)",
     panelStrong: "rgba(255, 252, 248, 0.96)",
@@ -118,7 +118,7 @@ const cardTemplates = [
   },
   {
     id: "aurora",
-    name: "涓撲笟钃濊皟",
+    name: "专业蓝调",
     background: ["#102743", "#1c6570", "#9fd7db"],
     panel: "rgba(13, 25, 42, 0.78)",
     panelStrong: "rgba(18, 33, 56, 0.88)",
@@ -130,7 +130,7 @@ const cardTemplates = [
   },
   {
     id: "paper",
-    name: "绾告劅杞诲ア",
+    name: "纸感轻奢",
     background: ["#fffaf4", "#eadfce", "#c46d44"],
     panel: "rgba(255, 255, 255, 0.86)",
     panelStrong: "rgba(255, 252, 247, 0.96)",
@@ -142,7 +142,7 @@ const cardTemplates = [
   },
   {
     id: "emerald",
-    name: "妫郴缈犲奖",
+    name: "森系翠影",
     background: ["#143a36", "#2d7d67", "#d5f0df"],
     panel: "rgba(241, 251, 245, 0.84)",
     panelStrong: "rgba(250, 255, 252, 0.94)",
@@ -154,7 +154,7 @@ const cardTemplates = [
   },
   {
     id: "ruby",
-    name: "缁厜鏄犲儚",
+    name: "绯光映像",
     background: ["#42172a", "#a63e58", "#f5bf93"],
     panel: "rgba(255, 246, 244, 0.84)",
     panelStrong: "rgba(255, 251, 248, 0.94)",
@@ -166,7 +166,7 @@ const cardTemplates = [
   },
   {
     id: "midnight",
-    name: "澶滃箷鏄熸渤",
+    name: "夜幕星河",
     background: ["#121626", "#2a3358", "#9aa8dd"],
     panel: "rgba(15, 18, 35, 0.78)",
     panelStrong: "rgba(20, 25, 48, 0.88)",
@@ -209,19 +209,19 @@ function setGalleryCardContent(card, item) {
 }
 
 function getProfileData() {
-  const name = form.studentName.value.trim() || "寮犲悓瀛?;
+  const name = form.studentName.value.trim() || "张同学";
   const age = calculateAge(form.birthday.value);
   const gender = getSelectedGender();
-  const department = form.department.value || "寰呭畬鍠勯櫌绯?;
-  const major = form.major.value.trim() || "寰呭畬鍠勪笓涓?;
-  const className = form.className.value.trim() || "寰呭畬鍠勭彮绾?;
-  const studentId = form.studentId.value.trim() || "寰呭畬鍠勫鍙?;
+  const department = form.department.value || "待完善院系";
+  const major = form.major.value.trim() || "待完善专业";
+  const className = form.className.value.trim() || "待完善班级";
+  const studentId = form.studentId.value.trim() || "待完善学号";
   const email = form.email.value.trim() || "example@student.edu.cn";
-  const phone = form.phone.value.trim() || "鏈～鍐欒仈绯荤數璇?;
+  const phone = form.phone.value.trim() || "未填写联系电话";
 
   return {
     name,
-    ageLabel: age === null ? "鐢熸棩寰呭畬鍠? : `${age} 宀乣,
+    ageLabel: age === null ? "生日待完善" : `${age} 岁`,
     gender,
     department,
     major,
@@ -287,7 +287,7 @@ function drawWrappedText(
 }
 
 function getWrappedLines(context, text, maxWidth, maxLines = 2) {
-  const content = text || "寰呭畬鍠勪俊鎭?;
+  const content = text || "待完善信息";
   const chars = Array.from(content);
   const lines = [];
   let currentLine = "";
@@ -358,7 +358,7 @@ function getFittedFont(
 
 function createCardFileName() {
   const safeName = getProfileData().name.replace(/[\\/:*?"<>|]/g, "-");
-  return `${safeName || "student-card"}-鍚嶇墖.png`;
+  return `${safeName || "student-card"}-名片.png`;
 }
 
 function updateCardMakerHint() {
@@ -373,23 +373,23 @@ function updateCardMakerHint() {
 
   if (canShareFiles) {
     cardMakerHint.textContent =
-      "褰撳墠璁惧鏀寔绯荤粺鍒嗕韩锛岀偣鍑讳繚瀛樺悗浼氫紭鍏堣皟璧风郴缁熷垎浜潰鏉匡紝鍙洿鎺ュ瓨鍏ョ浉鍐屾垨鍙戦€佸埌鏂囦欢銆?;
+      "当前设备支持系统分享，点击保存后会优先调起系统分享面板，可直接存入相册或发送到文件。";
     return;
   }
 
   if (isMobile) {
     cardMakerHint.textContent =
-      "閮ㄥ垎鎵嬫満娴忚鍣ㄦ棤娉曠洿鎺ュ啓鍏ョ郴缁熺浉鍐岋紝鐐瑰嚮淇濆瓨鍚庝細涓嬭浇 PNG 鍒扮郴缁熺洰褰曪紝鍙湪鐩稿唽鎴栨枃浠朵腑鏌ョ湅銆?;
+      "部分手机浏览器无法直接写入系统相册，点击保存后会下载 PNG 到系统目录，可在相册或文件中查看。";
     return;
   }
 
   if ("showSaveFilePicker" in window) {
     cardMakerHint.textContent =
-      "褰撳墠娴忚鍣ㄦ敮鎸佽嚜閫変繚瀛樹綅缃紝鐐瑰嚮淇濆瓨鍚庝細寮瑰嚭璺緞閫夋嫨銆?;
+      "当前浏览器支持自选保存位置，点击保存后会弹出路径选择。";
     return;
   }
 
-  cardMakerHint.textContent = "褰撳墠娴忚鍣ㄥ皢鐩存帴涓嬭浇 PNG 鍒伴粯璁や笅杞界洰褰曘€?;
+  cardMakerHint.textContent = "当前浏览器将直接下载 PNG 到默认下载目录。";
 }
 
 function drawBusinessCardBackground(context, template, width, height) {
@@ -493,12 +493,12 @@ async function renderBusinessCardPreview() {
 
   context.fillStyle = template.textPrimary;
   context.font = "600 42px Noto Serif SC, Microsoft YaHei, serif";
-  context.fillText("淇℃伅鍚嶇墖", 126, 548);
+  context.fillText("信息名片", 126, 548);
 
   context.fillStyle = template.textSecondary;
   const metaRows = [
     profile.department,
-    `${profile.major} 路 ${profile.className}`,
+    `${profile.major} · ${profile.className}`,
   ];
   let metaY = 604;
 
@@ -520,9 +520,9 @@ async function renderBusinessCardPreview() {
   });
 
   const infoBlocks = [
-    { label: "瀛﹀彿", value: profile.studentId },
-    { label: "鑱旂郴鐢佃瘽", value: profile.phone },
-    { label: "鐢靛瓙閭", value: profile.email },
+    { label: "学号", value: profile.studentId },
+    { label: "联系电话", value: profile.phone },
+    { label: "电子邮箱", value: profile.email },
   ];
 
   infoBlocks.forEach((item, index) => {
@@ -595,7 +595,7 @@ function canvasToBlob(canvas) {
           resolve(blob);
           return;
         }
-        reject(new Error("鍚嶇墖鐢熸垚澶辫触"));
+        reject(new Error("名片生成失败"));
       },
       "image/png",
       1,
@@ -617,7 +617,7 @@ function triggerCardDownload(blob, fileName) {
 async function saveBusinessCard() {
   try {
     downloadCardBtn.disabled = true;
-    downloadCardBtn.textContent = "姝ｅ湪鐢熸垚...";
+    downloadCardBtn.textContent = "正在生成...";
     await renderBusinessCardPreview();
 
     const blob = await canvasToBlob(businessCardCanvas);
@@ -633,15 +633,15 @@ async function saveBusinessCard() {
         try {
           await navigator.share({
             files: [file],
-            title: "瀛︾敓娉ㄥ唽鍚嶇墖",
-            text: "杩欐槸鏍规嵁褰撳墠璧勬枡鑷姩鐢熸垚鐨勫悕鐗囧浘鐗囥€?,
+            title: "学生注册名片",
+            text: "这是根据当前资料自动生成的名片图片。",
           });
-          showMessage("鍚嶇墖鍥剧墖宸茶皟璧风郴缁熷垎浜€?, true);
+          showMessage("名片图片已调起系统分享。", true);
           return;
         } catch (error) {
           if (error instanceof Error && error.name !== "AbortError") {
             triggerCardDownload(blob, fileName);
-            showMessage("绯荤粺鍒嗕韩涓嶅彲鐢紝宸叉敼涓轰笅杞藉悕鐗囧浘鐗囥€?, true);
+            showMessage("系统分享不可用，已改为下载名片图片。", true);
             return;
           }
           return;
@@ -655,7 +655,7 @@ async function saveBusinessCard() {
           suggestedName: fileName,
           types: [
             {
-              description: "PNG 鍥剧墖",
+              description: "PNG 图片",
               accept: {
                 "image/png": [".png"],
               },
@@ -665,12 +665,12 @@ async function saveBusinessCard() {
         const writable = await handle.createWritable();
         await writable.write(blob);
         await writable.close();
-        showMessage("鍚嶇墖鍥剧墖宸蹭繚瀛樺埌浣犻€夋嫨鐨勪綅缃€?, true);
+        showMessage("名片图片已保存到你选择的位置。", true);
         return;
       } catch (error) {
         if (!(error instanceof Error) || error.name !== "AbortError") {
           triggerCardDownload(blob, fileName);
-          showMessage("褰撳墠娴忚鍣ㄦ湭瀹屾垚璺緞淇濆瓨锛屽凡鏀逛负涓嬭浇鍚嶇墖鍥剧墖銆?, true);
+          showMessage("当前浏览器未完成路径保存，已改为下载名片图片。", true);
           return;
         }
         return;
@@ -680,15 +680,15 @@ async function saveBusinessCard() {
     triggerCardDownload(blob, fileName);
     showMessage(
       isMobileGalleryLayout()
-        ? "鍚嶇墖鍥剧墖宸插紑濮嬩笅杞斤紝鍙湪绯荤粺鐩稿唽鎴栨枃浠朵腑鏌ョ湅銆?
-        : "鍚嶇墖鍥剧墖宸蹭笅杞藉埌榛樿鐩綍銆?,
+        ? "名片图片已开始下载，可在系统相册或文件中查看。"
+        : "名片图片已下载到默认目录。",
       true,
     );
   } catch {
-    showMessage("鍚嶇墖鐢熸垚澶辫触锛岃绋嶅悗閲嶈瘯銆?, false);
+    showMessage("名片生成失败，请稍后重试。", false);
   } finally {
     downloadCardBtn.disabled = false;
-    downloadCardBtn.textContent = "淇濆瓨鍚嶇墖鍥剧墖";
+    downloadCardBtn.textContent = "保存名片图片";
   }
 }
 
@@ -1139,20 +1139,20 @@ function updateFormProgress() {
   progressValue.textContent = `${percentage}%`;
 
   if (isComplete) {
-    progressNote.textContent = "淇℃伅宸插～鍐欏畬鏁达紝鍙互鎻愪氦銆?;
+    progressNote.textContent = "信息已填写完整，可以提交。";
     submitBtn.disabled = false;
-    submitBtn.textContent = "鎻愪氦娉ㄥ唽淇℃伅";
+    submitBtn.textContent = "提交注册信息";
     return;
   }
 
-  progressNote.textContent = `宸插畬鎴?${completed} / ${total} 椤瑰叧閿俊鎭€俙;
+  progressNote.textContent = `已完成 ${completed} / ${total} 项关键信息。`;
   submitBtn.disabled = true;
-  submitBtn.textContent = "璇峰厛瀹屾垚濉啓";
+  submitBtn.textContent = "请先完成填写";
 }
 
 function getSelectedGender() {
   const checked = form.querySelector("input[name='gender']:checked");
-  return checked ? checked.value : "鏈€夋嫨鎬у埆";
+  return checked ? checked.value : "未选择性别";
 }
 
 function calculateAge(birthday) {
@@ -1180,12 +1180,12 @@ function calculateAge(birthday) {
 }
 
 function updatePreview() {
-  const name = form.studentName.value.trim() || "璇疯緭鍏ヤ綘鐨勫鍚?;
+  const name = form.studentName.value.trim() || "请输入你的姓名";
   const email = form.email.value.trim() || "example@student.edu.cn";
-  const phone = form.phone.value.trim() || "鏈～鍐?;
+  const phone = form.phone.value.trim() || "未填写";
   const major = form.major.value.trim();
   const className = form.className.value.trim();
-  const department = form.department.value || "寰呭畬鍠勪俊鎭?;
+  const department = form.department.value || "待完善信息";
   const age = calculateAge(form.birthday.value);
   const metaParts = [getSelectedGender(), department];
 
@@ -1198,10 +1198,10 @@ function updatePreview() {
   }
 
   previewBindings.studentName.textContent = name;
-  previewBindings.age.textContent = age === null ? "鏈～鍐欑敓鏃? : `${age} 宀乣;
+  previewBindings.age.textContent = age === null ? "未填写生日" : `${age} 岁`;
   previewBindings.email.textContent = email;
   previewBindings.phone.textContent = phone;
-  document.getElementById("cardMeta").textContent = metaParts.join(" 路 ");
+  document.getElementById("cardMeta").textContent = metaParts.join(" · ");
   renderBusinessCardPreviewIfNeeded();
 }
 
@@ -1219,11 +1219,11 @@ function updatePasswordStrength() {
   strengthBar.dataset.strength = String(score);
 
   const hints = [
-    "瀵嗙爜闀垮害涓嶅皯浜?浣嶏紝寤鸿鍖呭惈瀛楁瘝銆佹暟瀛楀拰绗﹀彿銆?,
-    "褰撳墠寮哄害杈冨急锛屽缓璁鍔犱綅鏁板拰瀛楃绉嶇被銆?,
-    "褰撳墠寮哄害涓€鑸紝鍙啀鍔犲叆澶у皬鍐欐垨鐗规畩绗﹀彿銆?,
-    "褰撳墠寮哄害鑹ソ锛屽凡鍏峰杈冨ソ鐨勫畨鍏ㄦ€с€?,
-    "褰撳墠寮哄害寰堥珮锛屽彲浠ユ斁蹇冧娇鐢ㄣ€?,
+    "密码长度不少于8位，建议包含字母、数字和符号。",
+    "当前强度较弱，建议增加位数和字符种类。",
+    "当前强度一般，可再加入大小写或特殊符号。",
+    "当前强度良好，已具备较好的安全性。",
+    "当前强度很高，可以放心使用。",
   ];
 
   passwordHint.textContent = hints[score];
@@ -1234,18 +1234,18 @@ function updateConfirmPasswordHint() {
   const password = passwordInput.value;
 
   if (!confirmPassword) {
-    confirmPasswordHint.textContent = "璇峰啀娆¤緭鍏ヤ笌鐧诲綍瀵嗙爜涓€鑷寸殑鍐呭銆?;
+    confirmPasswordHint.textContent = "请再次输入与登录密码一致的内容。";
     confirmPasswordField.classList.remove("is-success");
     return;
   }
 
   if (confirmPassword === password) {
-    confirmPasswordHint.textContent = "涓ゆ杈撳叆涓€鑷淬€?;
+    confirmPasswordHint.textContent = "两次输入一致。";
     confirmPasswordField.classList.add("is-success");
     return;
   }
 
-  confirmPasswordHint.textContent = "涓ゆ杈撳叆鐨勫瘑鐮侀渶淇濇寔涓€鑷淬€?;
+  confirmPasswordHint.textContent = "两次输入的密码需保持一致。";
   confirmPasswordField.classList.remove("is-success");
 }
 
@@ -1294,8 +1294,8 @@ function updateUploadState(file) {
     return;
   }
 
-  uploadTitle.textContent = "鐓х墖涓婁紶瀹屾垚";
-  uploadDescription.textContent = `褰撳墠鏂囦欢锛?{file.name}`;
+  uploadTitle.textContent = "照片上传完成";
+  uploadDescription.textContent = `当前文件：${file.name}`;
   uploadField.classList.add("is-uploaded");
 }
 
@@ -1420,14 +1420,14 @@ form.addEventListener("reset", () => {
   window.setTimeout(() => {
     avatarPreview.src = defaultAvatar;
     strengthBar.dataset.strength = "0";
-    passwordHint.textContent = "瀵嗙爜闀垮害涓嶅皯浜?浣嶏紝寤鸿鍖呭惈瀛楁瘝銆佹暟瀛楀拰绗﹀彿銆?;
-    confirmPasswordHint.textContent = "璇峰啀娆¤緭鍏ヤ笌鐧诲綍瀵嗙爜涓€鑷寸殑鍐呭銆?;
+    passwordHint.textContent = "密码长度不少于8位，建议包含字母、数字和符号。";
+    confirmPasswordHint.textContent = "请再次输入与登录密码一致的内容。";
     confirmPasswordField.classList.remove("is-success");
     updateUploadState(null);
     document
       .querySelectorAll(".invalid")
       .forEach((node) => node.classList.remove("invalid"));
-    showMessage("琛ㄥ崟宸查噸缃紝璇烽噸鏂板～鍐欎俊鎭€?, true);
+    showMessage("表单已重置，请重新填写信息。", true);
     updatePreview();
     updateFormProgress();
     localStorage.removeItem(draftKey);
@@ -1441,7 +1441,7 @@ clearDraftBtn.addEventListener("click", () => {
   updateUploadState(null);
   updatePreview();
   updateFormProgress();
-  showMessage("鏈湴鑽夌宸叉竻闄ゃ€?, true);
+  showMessage("本地草稿已清除。", true);
 });
 
 galleryPrevBtn.addEventListener("click", () => {
@@ -1508,16 +1508,16 @@ form.addEventListener("submit", (event) => {
 
   if (!passwordMatches) {
     validateField(confirmPasswordInput);
-    showMessage("涓ゆ杈撳叆鐨勫瘑鐮佷笉涓€鑷达紝璇锋鏌ュ悗閲嶆柊鎻愪氦銆?, false);
+    showMessage("两次输入的密码不一致，请检查后重新提交。", false);
     return;
   }
 
   if (!validInputs || !validGender) {
-    showMessage("璇峰厛瀹屾暣骞舵纭～鍐欐墍鏈夊繀濉俊鎭€?, false);
+    showMessage("请先完整并正确填写所有必填信息。", false);
     return;
   }
 
-  showMessage("娉ㄥ唽淇℃伅鎻愪氦鎴愬姛锛屽綋鍓嶉〉闈㈠彲鐩存帴浣滀负瀹為獙鎴愭灉灞曠ず銆?, true);
+  showMessage("注册信息提交成功，当前页面可直接作为实验成果展示。", true);
   localStorage.setItem(draftKey, JSON.stringify(serializeForm()));
   previewCard.classList.remove("form-success");
   void previewCard.offsetWidth;
