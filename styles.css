@@ -403,6 +403,10 @@ textarea {
   perspective: 1200px;
 }
 
+.campus-gallery.is-mobile {
+  grid-template-columns: 1fr;
+}
+
 .gallery-card {
   position: relative;
   aspect-ratio: 0.95 / 1;
@@ -951,43 +955,173 @@ fieldset.field.invalid .segmented-control span {
 
 @media (max-width: 720px) {
   .page-shell {
-    padding: 16px;
+    padding: 12px;
   }
 
   .page-shell::before {
-    inset: 10px;
-    border-radius: 24px;
+    inset: 8px;
+    border-radius: 20px;
   }
 
   .brand-panel,
   .form-panel {
-    padding: 24px;
-    border-radius: 22px;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .brand-panel h1 {
+    font-size: 1.72rem;
+  }
+
+  .intro {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .feature-card,
+  .preview-card,
+  .form-progress {
+    border-radius: 18px;
   }
 
   .panel-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
 
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .preview-top {
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .preview-list div {
+    padding: 10px;
   }
 
   .campus-gallery {
     grid-template-columns: 1fr;
+    gap: 0;
+    perspective: none;
   }
 
   .gallery-card {
-    aspect-ratio: 1.55 / 1;
-    min-height: 148px;
+    aspect-ratio: 1.42 / 1;
+    min-height: 196px;
+    border-radius: 20px;
+  }
+
+  .campus-gallery.is-mobile .gallery-card:not(:first-child) {
+    display: none;
+  }
+
+  .campus-gallery.is-mobile .gallery-card {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 16px 30px rgba(0, 0, 0, 0.16);
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+
+  .campus-gallery.is-mobile .gallery-card:hover {
+    transform: none;
+  }
+
+  .campus-gallery.is-mobile .gallery-image {
+    transform: scale(1.02);
+  }
+
+  .campus-gallery.is-mobile .gallery-overlay {
+    padding: 46px 14px 14px;
+  }
+
+  .campus-gallery.is-mobile .gallery-overlay p {
+    font-size: 0.7rem;
+  }
+
+  .campus-gallery.is-mobile .gallery-overlay h3 {
+    font-size: 1rem;
   }
 
   .gallery-toolbar {
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .gallery-toolbar p {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+
+  .gallery-control-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea,
+  .ghost-btn,
+  .primary-btn,
+  .secondary-btn {
+    font-size: 16px;
+  }
+
+  .segmented-control {
+    gap: 8px;
+  }
+
+  .segmented-control span {
+    min-width: calc(33.333% - 6px);
+    flex: 1 1 0;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .ghost-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-shell {
+    padding: 10px;
+  }
+
+  .brand-panel,
+  .form-panel {
+    padding: 16px;
+  }
+
+  .preview-top {
+    flex-direction: column;
+  }
+
+  .avatar-frame {
+    width: 72px;
+    height: 72px;
+  }
+
+  .gallery-card {
+    aspect-ratio: 1.2 / 1;
+    min-height: 220px;
+  }
+
+  .gallery-overlay {
+    padding: 56px 14px 14px;
+  }
+
+  .panel-header h2 {
+    font-size: 1.4rem;
   }
 }

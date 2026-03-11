@@ -21,6 +21,8 @@ const galleryCards = Array.from(
 );
 const galleryPrevBtn = document.getElementById("galleryPrevBtn");
 const galleryNextBtn = document.getElementById("galleryNextBtn");
+const campusGallery = document.querySelector(".campus-gallery");
+const mobileGalleryQuery = window.matchMedia("(max-width: 720px)");
 
 const previewBindings = {
   studentName: document.getElementById("cardName"),
@@ -91,11 +93,28 @@ const galleryItems = [
     objectPosition: "center center",
   },
 ];
+
 let galleryStartIndex = 0;
 let galleryTimerId = null;
 let isGalleryAnimating = false;
 const galleryOutDuration = 420;
 const galleryInDuration = 640;
+
+function isMobileGalleryLayout() {
+  return mobileGalleryQuery.matches;
+}
+
+function setGalleryCardContent(card, item) {
+  const image = card.querySelector(".gallery-image");
+  const eyebrow = card.querySelector(".gallery-overlay p");
+  const title = card.querySelector(".gallery-overlay h3");
+
+  image.src = item.src;
+  image.alt = item.alt;
+  image.style.objectPosition = item.objectPosition;
+  eyebrow.textContent = item.eyebrow;
+  title.textContent = item.title;
+}
 
 function getCompletionState() {
   const checks = [
@@ -122,21 +141,20 @@ function getCompletionState() {
 }
 
 function renderGallery() {
+  const mobileLayout = isMobileGalleryLayout();
+
+  campusGallery.classList.toggle("is-mobile", mobileLayout);
+
   galleryCards.forEach((card, index) => {
-    const item =
-      galleryItems[(galleryStartIndex + index) % galleryItems.length];
-    const image = card.querySelector(".gallery-image");
-    const eyebrow = card.querySelector(".gallery-overlay p");
-    const title = card.querySelector(".gallery-overlay h3");
+    const item = galleryItems[(galleryStartIndex + index) % galleryItems.length];
 
-    image.src = item.src;
-    image.alt = item.alt;
-    image.style.objectPosition = item.objectPosition;
-    eyebrow.textContent = item.eyebrow;
-    title.textContent = item.title;
-
-    card.classList.toggle("gallery-card--exit", index === 0);
-    card.classList.toggle("gallery-card--enter", index === 2);
+    setGalleryCardContent(card, item);
+    card.classList.toggle("gallery-card--exit", !mobileLayout && index === 0);
+    card.classList.toggle("gallery-card--enter", !mobileLayout && index === 2);
+    card.setAttribute(
+      "aria-hidden",
+      mobileLayout && index > 0 ? "true" : "false",
+    );
   });
 }
 
@@ -151,6 +169,58 @@ function clearGalleryAnimations() {
 }
 
 function animateGalleryPhase(direction, phase) {
+  if (isMobileGalleryLayout()) {
+    const activeCard = galleryCards[0];
+    const image = activeCard.querySelector(".gallery-image");
+    const overlay = activeCard.querySelector(".gallery-overlay");
+    const duration = phase === "out" ? 220 : 320;
+    const easing = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+    const cardFrames =
+      phase === "out"
+        ? [
+            { opacity: 1, transform: "translateX(0) scale(1)" },
+            {
+              opacity: 0.64,
+              transform: `translateX(${direction === 1 ? "-14px" : "14px"}) scale(0.985)`,
+            },
+          ]
+        : [
+            {
+              opacity: 0.68,
+              transform: `translateX(${direction === 1 ? "14px" : "-14px"}) scale(0.985)`,
+            },
+            { opacity: 1, transform: "translateX(0) scale(1)" },
+          ];
+
+    const imageFrames =
+      phase === "out"
+        ? [
+            { transform: "scale(1.02)", filter: "saturate(0.98) blur(0px)" },
+            { transform: "scale(1.06)", filter: "saturate(0.9) blur(1.2px)" },
+          ]
+        : [
+            { transform: "scale(1.06)", filter: "saturate(0.9) blur(1.2px)" },
+            { transform: "scale(1.02)", filter: "saturate(0.98) blur(0px)" },
+          ];
+
+    const overlayFrames =
+      phase === "out"
+        ? [
+            { opacity: 1, transform: "translateY(0)" },
+            { opacity: 0.56, transform: "translateY(8px)" },
+          ]
+        : [
+            { opacity: 0.56, transform: "translateY(8px)" },
+            { opacity: 1, transform: "translateY(0)" },
+          ];
+
+    activeCard.animate(cardFrames, { duration, easing, fill: "forwards" });
+    image.animate(imageFrames, { duration, easing, fill: "forwards" });
+    overlay.animate(overlayFrames, { duration, easing, fill: "forwards" });
+    return;
+  }
+
   const movingLeft = direction === 1;
 
   galleryCards.forEach((card, index) => {
@@ -292,153 +362,151 @@ function animateGalleryPhase(direction, phase) {
         imageFrames = imageOutFrames[reverseIndex];
         overlayFrames = overlayOutFrames[reverseIndex];
       }
+    } else if (movingLeft) {
+      const cardInFrames = [
+        [
+          {
+            transform: "translateX(12px) scale(0.978)",
+            opacity: 0.7,
+            filter: "blur(1.1px) saturate(0.9)",
+          },
+          {
+            transform: "translateX(-1px) scale(0.988)",
+            opacity: 0.84,
+            filter: "blur(0.12px) saturate(0.94) brightness(0.95)",
+          },
+        ],
+        [
+          {
+            transform: "translateX(16px) scale(0.988)",
+            opacity: 0.82,
+            filter: "blur(0.9px) saturate(0.93)",
+          },
+          { transform: "translateX(0) scale(1)", opacity: 1, filter: "none" },
+        ],
+        [
+          {
+            transform: "translateX(22px) scale(0.965)",
+            opacity: 0.62,
+            filter: "blur(1.8px) saturate(0.86) brightness(0.92)",
+          },
+          {
+            transform: "translateX(1px) scale(1.01)",
+            opacity: 1,
+            filter: "none",
+          },
+        ],
+      ];
+
+      const imageInFrames = [
+        [
+          { transform: "scale(1.07)", filter: "saturate(0.86) blur(1.4px)" },
+          {
+            transform: "scale(1.035)",
+            filter: "saturate(0.94) blur(0.18px)",
+          },
+        ],
+        [
+          { transform: "scale(1.06)", filter: "saturate(0.9) blur(1.05px)" },
+          { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
+        ],
+        [
+          { transform: "scale(1.085)", filter: "saturate(0.84) blur(2px)" },
+          { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
+        ],
+      ];
+
+      const overlayInFrames = [
+        [
+          { opacity: 0.58, transform: "translateY(8px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        [
+          { opacity: 0.62, transform: "translateY(8px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        [
+          { opacity: 0.52, transform: "translateY(10px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+      ];
+
+      cardFrames = cardInFrames[index];
+      imageFrames = imageInFrames[index];
+      overlayFrames = overlayInFrames[index];
     } else {
-      if (movingLeft) {
-        const cardInFrames = [
-          [
-            {
-              transform: "translateX(12px) scale(0.978)",
-              opacity: 0.7,
-              filter: "blur(1.1px) saturate(0.9)",
-            },
-            {
-              transform: "translateX(-1px) scale(0.988)",
-              opacity: 0.84,
-              filter: "blur(0.12px) saturate(0.94) brightness(0.95)",
-            },
-          ],
-          [
-            {
-              transform: "translateX(16px) scale(0.988)",
-              opacity: 0.82,
-              filter: "blur(0.9px) saturate(0.93)",
-            },
-            { transform: "translateX(0) scale(1)", opacity: 1, filter: "none" },
-          ],
-          [
-            {
-              transform: "translateX(22px) scale(0.965)",
-              opacity: 0.62,
-              filter: "blur(1.8px) saturate(0.86) brightness(0.92)",
-            },
-            {
-              transform: "translateX(1px) scale(1.01)",
-              opacity: 1,
-              filter: "none",
-            },
-          ],
-        ];
+      const reverseIndex = 2 - index;
+      const cardInFrames = [
+        [
+          {
+            transform: "translateX(-12px) scale(0.978)",
+            opacity: 0.7,
+            filter: "blur(1.1px) saturate(0.9)",
+          },
+          {
+            transform: "translateX(-1px) scale(0.988)",
+            opacity: 0.84,
+            filter: "blur(0.12px) saturate(0.94) brightness(0.95)",
+          },
+        ],
+        [
+          {
+            transform: "translateX(-16px) scale(0.988)",
+            opacity: 0.82,
+            filter: "blur(0.9px) saturate(0.93)",
+          },
+          { transform: "translateX(0) scale(1)", opacity: 1, filter: "none" },
+        ],
+        [
+          {
+            transform: "translateX(-22px) scale(0.965)",
+            opacity: 0.62,
+            filter: "blur(1.8px) saturate(0.86) brightness(0.92)",
+          },
+          {
+            transform: "translateX(1px) scale(1.01)",
+            opacity: 1,
+            filter: "none",
+          },
+        ],
+      ];
 
-        const imageInFrames = [
-          [
-            { transform: "scale(1.07)", filter: "saturate(0.86) blur(1.4px)" },
-            {
-              transform: "scale(1.035)",
-              filter: "saturate(0.94) blur(0.18px)",
-            },
-          ],
-          [
-            { transform: "scale(1.06)", filter: "saturate(0.9) blur(1.05px)" },
-            { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
-          ],
-          [
-            { transform: "scale(1.085)", filter: "saturate(0.84) blur(2px)" },
-            { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
-          ],
-        ];
+      const imageInFrames = [
+        [
+          { transform: "scale(1.07)", filter: "saturate(0.86) blur(1.4px)" },
+          {
+            transform: "scale(1.035)",
+            filter: "saturate(0.94) blur(0.18px)",
+          },
+        ],
+        [
+          { transform: "scale(1.06)", filter: "saturate(0.9) blur(1.05px)" },
+          { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
+        ],
+        [
+          { transform: "scale(1.085)", filter: "saturate(0.84) blur(2px)" },
+          { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
+        ],
+      ];
 
-        const overlayInFrames = [
-          [
-            { opacity: 0.58, transform: "translateY(8px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          [
-            { opacity: 0.62, transform: "translateY(8px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          [
-            { opacity: 0.52, transform: "translateY(10px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-        ];
+      const overlayInFrames = [
+        [
+          { opacity: 0.58, transform: "translateY(8px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        [
+          { opacity: 0.62, transform: "translateY(8px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        [
+          { opacity: 0.52, transform: "translateY(10px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+      ];
 
-        cardFrames = cardInFrames[index];
-        imageFrames = imageInFrames[index];
-        overlayFrames = overlayInFrames[index];
-      } else {
-        const reverseIndex = 2 - index;
-        const cardInFrames = [
-          [
-            {
-              transform: "translateX(-12px) scale(0.978)",
-              opacity: 0.7,
-              filter: "blur(1.1px) saturate(0.9)",
-            },
-            {
-              transform: "translateX(-1px) scale(0.988)",
-              opacity: 0.84,
-              filter: "blur(0.12px) saturate(0.94) brightness(0.95)",
-            },
-          ],
-          [
-            {
-              transform: "translateX(-16px) scale(0.988)",
-              opacity: 0.82,
-              filter: "blur(0.9px) saturate(0.93)",
-            },
-            { transform: "translateX(0) scale(1)", opacity: 1, filter: "none" },
-          ],
-          [
-            {
-              transform: "translateX(-22px) scale(0.965)",
-              opacity: 0.62,
-              filter: "blur(1.8px) saturate(0.86) brightness(0.92)",
-            },
-            {
-              transform: "translateX(1px) scale(1.01)",
-              opacity: 1,
-              filter: "none",
-            },
-          ],
-        ];
-
-        const imageInFrames = [
-          [
-            { transform: "scale(1.07)", filter: "saturate(0.86) blur(1.4px)" },
-            {
-              transform: "scale(1.035)",
-              filter: "saturate(0.94) blur(0.18px)",
-            },
-          ],
-          [
-            { transform: "scale(1.06)", filter: "saturate(0.9) blur(1.05px)" },
-            { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
-          ],
-          [
-            { transform: "scale(1.085)", filter: "saturate(0.84) blur(2px)" },
-            { transform: "scale(1.035)", filter: "saturate(0.98) blur(0px)" },
-          ],
-        ];
-
-        const overlayInFrames = [
-          [
-            { opacity: 0.58, transform: "translateY(8px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          [
-            { opacity: 0.62, transform: "translateY(8px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          [
-            { opacity: 0.52, transform: "translateY(10px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-        ];
-
-        cardFrames = cardInFrames[reverseIndex];
-        imageFrames = imageInFrames[reverseIndex];
-        overlayFrames = overlayInFrames[reverseIndex];
-      }
+      cardFrames = cardInFrames[reverseIndex];
+      imageFrames = imageInFrames[reverseIndex];
+      overlayFrames = overlayInFrames[reverseIndex];
     }
 
     const duration = phase === "out" ? galleryOutDuration : galleryInDuration;
@@ -458,6 +526,9 @@ function rotateGallery(direction = 1) {
   isGalleryAnimating = true;
   animateGalleryPhase(direction, "out");
 
+  const outDuration = isMobileGalleryLayout() ? 220 : galleryOutDuration;
+  const inDuration = isMobileGalleryLayout() ? 320 : galleryInDuration;
+
   window.setTimeout(() => {
     clearGalleryAnimations();
     galleryStartIndex =
@@ -470,8 +541,8 @@ function rotateGallery(direction = 1) {
       clearGalleryAnimations();
       renderGallery();
       isGalleryAnimating = false;
-    }, galleryInDuration);
-  }, galleryOutDuration);
+    }, inDuration);
+  }, outDuration);
 }
 
 function restartGalleryTimer() {
@@ -799,6 +870,12 @@ galleryPrevBtn.addEventListener("click", () => {
 
 galleryNextBtn.addEventListener("click", () => {
   rotateGallery(1);
+  restartGalleryTimer();
+});
+
+mobileGalleryQuery.addEventListener("change", () => {
+  clearGalleryAnimations();
+  renderGallery();
   restartGalleryTimer();
 });
 
