@@ -184,6 +184,8 @@ let isGalleryAnimating = false;
 let selectedCardTemplate = cardTemplates[0].id;
 const galleryOutDuration = 420;
 const galleryInDuration = 640;
+const galleryImageCache = new Map();
+const galleryPreloadPromises = new Map();
 
 function isMobileGalleryLayout() {
   return mobileGalleryQuery.matches;
@@ -201,11 +203,84 @@ function setGalleryCardContent(card, item) {
   const eyebrow = card.querySelector(".gallery-overlay p");
   const title = card.querySelector(".gallery-overlay h3");
 
-  image.src = item.src;
+  image.loading = "eager";
+  image.decoding = "async";
+  if ("fetchPriority" in image) {
+    image.fetchPriority = "high";
+  }
+  if (image.getAttribute("src") !== item.src) {
+    image.src = item.src;
+  }
   image.alt = item.alt;
   image.style.objectPosition = item.objectPosition;
   eyebrow.textContent = item.eyebrow;
   title.textContent = item.title;
+}
+
+function getGalleryVisibleCount() {
+  return isMobileGalleryLayout() ? 1 : 3;
+}
+
+function getGalleryItemAt(index) {
+  return galleryItems[(index + galleryItems.length) % galleryItems.length];
+}
+
+function preloadGalleryItem(item, priority = "auto") {
+  if (galleryImageCache.has(item.src)) {
+    return Promise.resolve(galleryImageCache.get(item.src));
+  }
+
+  if (galleryPreloadPromises.has(item.src)) {
+    return galleryPreloadPromises.get(item.src);
+  }
+
+  const preloadPromise = new Promise((resolve, reject) => {
+    const image = new Image();
+    image.decoding = "async";
+    if ("fetchPriority" in image) {
+      image.fetchPriority = priority;
+    }
+    image.onload = () => {
+      galleryImageCache.set(item.src, image);
+      galleryPreloadPromises.delete(item.src);
+      resolve(image);
+    };
+    image.onerror = () => {
+      galleryPreloadPromises.delete(item.src);
+      reject(new Error(`图片加载失败: ${item.src}`));
+    };
+    image.src = item.src;
+  });
+
+  galleryPreloadPromises.set(item.src, preloadPromise);
+  return preloadPromise;
+}
+
+async function preloadGalleryWindow(startIndex, count = getGalleryVisibleCount()) {
+  const visibleItems = Array.from({ length: count }, (_, offset) =>
+    getGalleryItemAt(startIndex + offset),
+  );
+
+  await Promise.all(
+    visibleItems.map((item, index) =>
+      preloadGalleryItem(item, index === 0 ? "high" : "auto").catch(
+        () => null,
+      ),
+    ),
+  );
+
+  const lookaheadCount = Math.min(galleryItems.length, count + 2);
+  for (let offset = count; offset < lookaheadCount; offset += 1) {
+    const nextItem = getGalleryItemAt(startIndex + offset);
+    void preloadGalleryItem(nextItem, "low").catch(() => null);
+  }
+}
+
+async function refreshGalleryDisplay() {
+  campusGallery.classList.add("is-loading");
+  await preloadGalleryWindow(galleryStartIndex);
+  renderGallery();
+  campusGallery.classList.remove("is-loading");
 }
 
 function getProfileData() {
@@ -1102,17 +1177,29 @@ function rotateGallery(direction = 1) {
 
   isGalleryAnimating = true;
   setGalleryButtonsDisabled(true);
+  const nextStartIndex =
+    (galleryStartIndex + direction + galleryItems.length) % galleryItems.length;
+  const needsLoading = Array.from(
+    { length: getGalleryVisibleCount() },
+    (_, offset) => getGalleryItemAt(nextStartIndex + offset),
+  ).some((item) => !galleryImageCache.has(item.src));
+
+  if (needsLoading) {
+    campusGallery.classList.add("is-loading");
+  }
+
+  const preloadPromise = preloadGalleryWindow(nextStartIndex);
   animateGalleryPhase(direction, "out");
 
   const outDuration = isMobileGalleryLayout() ? 220 : galleryOutDuration;
   const inDuration = isMobileGalleryLayout() ? 320 : galleryInDuration;
 
-  window.setTimeout(() => {
+  window.setTimeout(async () => {
+    await preloadPromise;
     clearGalleryAnimations();
-    galleryStartIndex =
-      (galleryStartIndex + direction + galleryItems.length) %
-      galleryItems.length;
+    galleryStartIndex = nextStartIndex;
     renderGallery();
+    campusGallery.classList.remove("is-loading");
     animateGalleryPhase(direction, "in");
 
     window.setTimeout(() => {
@@ -1120,6 +1207,7 @@ function rotateGallery(direction = 1) {
       renderGallery();
       isGalleryAnimating = false;
       setGalleryButtonsDisabled(false);
+      void preloadGalleryWindow(galleryStartIndex + getGalleryVisibleCount());
     }, inDuration);
   }, outDuration);
 }
@@ -1486,7 +1574,7 @@ downloadCardBtn.addEventListener("click", () => {
 
 mobileGalleryQuery.addEventListener("change", () => {
   clearGalleryAnimations();
-  renderGallery();
+  void refreshGalleryDisplay();
   restartGalleryTimer();
   updateCardMakerHint();
   renderBusinessCardPreviewIfNeeded();
@@ -1527,6 +1615,6 @@ form.addEventListener("submit", (event) => {
 restoreDraft();
 updateConfirmPasswordHint();
 updateFormProgress();
-renderGallery();
+void refreshGalleryDisplay();
 restartGalleryTimer();
 updateCardMakerHint();
