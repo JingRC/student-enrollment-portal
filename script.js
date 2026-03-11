@@ -277,6 +277,16 @@ function drawWrappedText(
   lineHeight,
   maxLines = 2,
 ) {
+  const lines = getWrappedLines(context, text, maxWidth, maxLines);
+
+  lines.forEach((line, index) => {
+    context.fillText(line, x, y + index * lineHeight);
+  });
+
+  return y + (lines.length - 1) * lineHeight;
+}
+
+function getWrappedLines(context, text, maxWidth, maxLines = 2) {
   const content = text || "寰呭畬鍠勪俊鎭?;
   const chars = Array.from(content);
   const lines = [];
@@ -311,11 +321,7 @@ function drawWrappedText(
     return `${trimmed}...`;
   });
 
-  visibleLines.forEach((line, index) => {
-    context.fillText(line, x, y + index * lineHeight);
-  });
-
-  return y + (visibleLines.length - 1) * lineHeight;
+  return visibleLines;
 }
 
 function drawPill(context, text, x, y, background, color) {
@@ -415,7 +421,7 @@ function drawBusinessCardBackground(context, template, width, height) {
     template.panel,
   );
   fillRoundedRect(context, 86, 86, width - 172, 306, 40, template.panelStrong);
-  fillRoundedRect(context, 86, 430, width - 172, 520, 40, template.panelStrong);
+  fillRoundedRect(context, 86, 430, width - 172, 650, 40, template.panelStrong);
 }
 
 async function renderBusinessCardPreview() {
@@ -490,16 +496,28 @@ async function renderBusinessCardPreview() {
   context.fillText("淇℃伅鍚嶇墖", 126, 548);
 
   context.fillStyle = template.textSecondary;
-  context.font = "500 30px Outfit, Microsoft YaHei, sans-serif";
-  drawWrappedText(
-    context,
-    `${profile.department} 路 ${profile.major} 路 ${profile.className}`,
-    126,
-    604,
-    width - 252,
-    42,
-    2,
-  );
+  const metaRows = [
+    profile.department,
+    `${profile.major} 路 ${profile.className}`,
+  ];
+  let metaY = 604;
+
+  metaRows.forEach((row) => {
+    context.font = getFittedFont(
+      context,
+      row,
+      30,
+      22,
+      width - 252,
+      "Outfit, Microsoft YaHei, sans-serif",
+      500,
+    );
+    const rowLines = getWrappedLines(context, row, width - 252, 2);
+    rowLines.forEach((line, index) => {
+      context.fillText(line, 126, metaY + index * 36);
+    });
+    metaY += rowLines.length * 36 + 14;
+  });
 
   const infoBlocks = [
     { label: "瀛﹀彿", value: profile.studentId },
@@ -508,7 +526,7 @@ async function renderBusinessCardPreview() {
   ];
 
   infoBlocks.forEach((item, index) => {
-    const top = 672 + index * 124;
+    const top = metaY + 24 + index * 112;
     fillRoundedRect(
       context,
       126,
